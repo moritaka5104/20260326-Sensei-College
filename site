@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sensei College Basecamp</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Noto+Serif+JP:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    }
+    .font-serif-custom {
+      font-family: 'Cormorant Garamond', 'Noto Serif JP', serif;
+    }
+    
+    .glass-nav {
+      background: rgba(11, 20, 17, 0.85); /* ダークグリーン系の黒 */
+      backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    /* スタバ風の高級感あるカード */
+    .sb-card {
+      background: #111d18; /* 深いダークグリーン */
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sb-card:hover {
+      transform: scale(1.02) translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+      border-color: rgba(0, 112, 74, 0.5); /* スタバグリーンで淡く光る */
+    }
+    
+    .link-pill {
+      transition: all 0.3s ease;
+      background: rgba(0, 112, 74, 0.1);
+      border: 1px solid rgba(0, 112, 74, 0.2);
+      color: #d4e9e2;
+    }
+    .link-pill:hover {
+      background: rgba(0, 112, 74, 0.25);
+      border-color: rgba(0, 112, 74, 0.4);
+      transform: translateX(4px);
+    }
+    
+    .animate-blob {
+      animation: blob 10s infinite alternate;
+    }
+    .animation-delay-2000 {
+      animation-delay: 2s;
+    }
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+    
+    /* フェードインアニメーション用クラス */
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(3rem);
+      transition: opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1), transform 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fade-in-up.is-visible {
+      opacity: 1;
+      transform: translateY(0) translateX(0);
+    }
+
+    /* カスタムスクロールバー */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b1411; 
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #233e34; 
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00704a; 
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#0b1411] text-[#f2f0eb] font-sans selection:bg-[#00704a] selection:text-white">
+
+  <!-- ナビゲーション -->
+  <nav class="glass-nav fixed top-0 w-full z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="font-serif-custom font-semibold tracking-wider text-xl cursor-pointer text-[#cba258]" onclick="showPage('home')">
+        Sensei College
+      </div>
+      <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-400">
+        <button onclick="showPage('home')" class="hover:text-white transition-colors">ホーム</button>
+        <button onclick="showPage('step0')" class="hover:text-white transition-colors">ステップ0</button>
+        <button onclick="showPage('step1')" class="hover:text-white transition-colors">ステップ1：DX</button>
+        <button onclick="showPage('step2')" class="hover:text-white transition-colors">ステップ2：AI</button>
+        <button onclick="showPage('step3')" class="hover:text-white transition-colors">ステップ3：伴走</button>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScStjTHEkevotsCt_dHErSlyk1oTbmE6Us7xmVOZDkKPJNX5g/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="hover:text-[#cba258] transition-colors">アンケート</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-24 pb-32">
+    <!-- 1. ホーム画面 -->
+    <div id="page-home" class="page-section">
+      <section class="min-h-[80vh] flex flex-col items-center justify-center text-center px-4 relative">
+        <div class="fade-in-up inline-block mb-6 px-5 py-2 rounded-full bg-[#1e3932] text-[#d4e9e2] text-xs font-bold tracking-widest uppercase border border-[#2c4a40]" style="transition-delay: 100ms;">
+          Welcome to Basecamp
+        </div>
+        
+        <div class="fade-in-up" style="transition-delay: 300ms;">
+          <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-tight max-w-4xl font-serif-custom">
+            子どもも教師もともに学ぶ！<br />
+            AI活用で学習最大化
+          </h1>
+        </div>
+
+        <div class="fade-in-up" style="transition-delay: 700ms;">
+          <button onclick="showPage('step0')" class="px-10 py-4 bg-[#00704a] text-white rounded-full font-medium text-lg hover:bg-[#005c3e] transition-all duration-300 hover:shadow-[0_0_20px_rgba(0,112,74,0.4)] hover:-translate-y-1">
+            学びを始める
+          </button>
+        </div>
+
+        <!-- ページ内リンクカード -->
+        <div class="w-full max-w-5xl mt-32 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left fade-in-up" style="transition-delay: 900ms;">
+          <div onclick="showPage('step0')" class="sb-card p-8 cursor-pointer group">
+            <h3 class="text-xs font-bold text-[#cba258] mb-3 uppercase tracking-widest">Step 0</h3>
+            <h4 class="text-xl font-serif-custom font-bold mb-3 group-hover:text-white text-[#f2f0eb] transition-colors">問題意識の喚起</h4>
+            <p class="text-gray-400 text-sm leading-relaxed">なぜ今、私たちは変わらなければならないのか。</p>
+          </div>
+          <div onclick="showPage('step1')" class="sb-card p-8 cursor-pointer group">
+            <h3 class="text-xs font-bold text-[#00704a] mb-3 uppercase tracking-widest">Step 1</h3>
+            <h4 class="text-xl font-serif-custom font-bold mb-3 group-hover:text-white text-[#f2f0eb] transition-colors">校務と授業のDX</h4>
+            <p class="text-gray-400 text-sm leading-relaxed">ICTを「文房具」として使いこなすための実践とシステム構築。</p>
+          </div>
+          <div onclick="showPage('step2')" class="sb-card p-8 cursor-pointer group">
+            <h3 class="text-xs font-bold text-[#00704a] mb-3 uppercase tracking-widest">Step 2</h3>
+            <h4 class="text-xl font-serif-custom font-bold mb-3 group-hover:text-white text-[#f2f0eb] transition-colors">AI活用の世界へ</h4>
+            <p class="text-gray-400 text-sm leading-relaxed">生成AIを「編集者」「伴走者」として迎え入れる方法と実践。</p>
+          </div>
+          <div onclick="showPage('step3')" class="sb-card p-8 cursor-pointer group">
+            <h3 class="text-xs font-bold text-[#00704a] mb-3 uppercase tracking-widest">Step 3</h3>
+            <h4 class="text-xl font-serif-custom font-bold mb-3 group-hover:text-white text-[#f2f0eb] transition-colors">AIとともに伴走</h4>
+            <p class="text-gray-400 text-sm leading-relaxed">AIと共に歩み、学習を深めるための新たなアプローチ。</p>
+          </div>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScStjTHEkevotsCt_dHErSlyk1oTbmE6Us7xmVOZDkKPJNX5g/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="sb-card p-8 cursor-pointer group block">
+            <h3 class="text-xs font-bold text-[#cba258] mb-3 uppercase tracking-widest flex items-center justify-between">
+              Survey
+              <i data-lucide="external-link" class="w-4 h-4"></i>
+            </h3>
+            <h4 class="text-xl font-serif-custom font-bold mb-3 group-hover:text-white text-[#f2f0eb] transition-colors">アンケート</h4>
+            <p class="text-gray-400 text-sm leading-relaxed">本日の学びや気づきについて、フィードバックをお願いします。</p>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- 2. ステップ0画面 -->
+    <div id="page-step0" class="page-section hidden px-6 max-w-6xl mx-auto">
+      <button onclick="showPage('home')" class="mb-8 flex items-center text-gray-400 hover:text-white transition-colors font-medium">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> ホームに戻る
+      </button>
+
+      <div class="fade-in-up" style="transition-delay: 0ms;">
+        <div class="bg-[#111d18] text-[#f2f0eb] rounded-3xl p-10 md:p-16 relative overflow-hidden shadow-2xl border border-[rgba(255,255,255,0.05)]">
+          <div class="absolute top-0 right-0 w-96 h-96 bg-[#00704a] rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-blob"></div>
+          <div class="absolute bottom-0 left-0 w-96 h-96 bg-[#cba258] rounded-full mix-blend-screen filter blur-[100px] opacity-10 animate-blob animation-delay-2000"></div>
+          
+          <div class="relative z-10">
+            <h2 class="text-xs font-bold tracking-widest text-[#cba258] uppercase mb-4">Step 0</h2>
+            <h3 class="text-4xl md:text-5xl font-bold tracking-tight mb-8 leading-tight font-serif-custom">
+              なぜ今、私たちは<br class="md:hidden"/>変わらなければならないのか。
+            </h3>
+            
+            <p class="text-xl text-gray-300 font-light mb-12 max-w-3xl leading-relaxed">
+              「今さら聞くのは恥ずかしい」「仕組みがよくわからない」——そう言って立ち止まっている間にも、社会は劇的なスピードで変化しています。
+            </p>
+
+            <div class="grid grid-cols-1 gap-8 border-t border-[rgba(255,255,255,0.1)] pt-12">
+              <div class="bg-[#0b1411]/50 p-6 md:p-8 rounded-2xl border border-[rgba(255,255,255,0.05)]">
+                <h4 class="text-2xl font-serif-custom font-bold mb-4 text-[#cba258] flex items-center gap-3">
+                  <i data-lucide="book-open" class="w-6 h-6"></i>
+                  OECD「Digital Education Outlook 2026」が示す教育の再定義
+                </h4>
+                <p class="text-gray-300 leading-relaxed font-light text-lg">
+                  最新のレポートは、生成AIが単なる効率化ツールではなく、教育の構造自体を変革することを示唆しています。AIは学生の教科知識の獲得を支援し、教師と学生が協働する際の高度なパートナーとなり、さらには学習経路（Learning Pathways）の分析まで担うようになります。もはや教師の役割は「知識の伝達者」ではなく、AIという知能を活用しながら学習体験を構築する「学びのデザイナー」へと完全にシフトしています。
+                </p>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-[#0b1411]/50 p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
+                  <h4 class="text-xl font-serif-custom font-bold mb-4 text-[#d4e9e2] flex items-center gap-3">
+                    <i data-lucide="brain" class="w-5 h-5 text-[#00704a]"></i>
+                    「知識の再生」から「批判的思考」へ
+                  </h4>
+                  <p class="text-gray-400 leading-relaxed font-light">
+                    AIが瞬時に答えを生成する時代、暗記や定型的な知識の再生を求める授業は意味を失いつつあります。これからの授業で見据えるべきは、AIの出力を批判的に吟味し、より深い問いを立てる「クリティカルシンキング」の育成です。正解を与えるのではなく、AIを壁打ち相手として活用しながら、自ら納得解を導き出すプロセスの指導が求められます。
+                  </p>
+                </div>
+                
+                <div class="bg-[#0b1411]/50 p-6 rounded-2xl border border-[rgba(255,255,255,0.05)]">
+                  <h4 class="text-xl font-serif-custom font-bold mb-4 text-[#d4e9e2] flex items-center gap-3">
+                    <i data-lucide="target" class="w-5 h-5 text-[#00704a]"></i>
+                    データ駆動とコーチングの融合
+                  </h4>
+                  <p class="text-gray-400 leading-relaxed font-light">
+                    AIによる個別最適化が進むと、従来の一斉指導の限界を超えたアプローチが可能になります。教師は、AIが分析する学習データに基づき、つまずきを早期に発見し介入する役割を担います。そこでは、データを読み解く力と同時に、子どもたちの動機付けや心理的サポートを行う高度な「コーチングスキル」が、人間の教師ならではの価値となります。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-8 p-6 bg-[#1e3932]/30 rounded-2xl border border-[#00704a]/30 backdrop-blur-sm relative overflow-hidden">
+               <div class="relative z-10">
+                 <h4 class="text-xl font-serif-custom font-bold mb-3 text-[#cba258] flex items-center gap-2">
+                   <i data-lucide="monitor" class="w-5 h-5"></i>
+                   壮大なビジョンを実現するための、確実な第一歩
+                 </h4>
+                 <p class="text-gray-300 leading-relaxed font-light">
+                   このようなAI前提の高度な教育（Step 2）を見据えるからこそ、まずはGIGA端末を「特別な機材」から「日常の文房具」へと昇華させる必要があります。日常的な情報共有、クラウドでの共同編集、オンラインでの思考の可視化。足元の校務と授業のDX（Step 1）こそが、未来の教育システムへ接続するための不可欠な土台となります。
+                 </p>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-16 text-center fade-in-up">
+        <button onclick="showPage('step1')" class="px-8 py-4 bg-[#00704a] text-white rounded-full font-medium text-lg hover:bg-[#005c3e] transition-all hover:scale-105 inline-flex items-center shadow-lg">
+          次のステップへ：校務と授業のDX <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. ステップ1画面 -->
+    <div id="page-step1" class="page-section hidden px-6 max-w-6xl mx-auto">
+      <button onclick="showPage('home')" class="mb-8 flex items-center text-gray-400 hover:text-white transition-colors font-medium">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> ホームに戻る
+      </button>
+
+      <div class="fade-in-up text-center mb-16" style="transition-delay: 0ms;">
+        <h2 class="text-xs font-bold tracking-widest text-[#00704a] uppercase mb-3">Step 1</h2>
+        <h3 class="text-4xl md:text-5xl font-bold tracking-tight mb-6 font-serif-custom">校務と授業のDX</h3>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto font-light">
+          ICTを「文房具」や「インフラ」として使いこなすための実践とシステム構築を学び、強固な基盤を作ります。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- カード1 -->
+        <div class="fade-in-up sb-card p-8 md:p-10 h-full flex flex-col" style="transition-delay: 0ms;">
+          <div class="mb-6 p-4 bg-[#1e3932] inline-block rounded-2xl border border-[#2c4a40]">
+            <i data-lucide="layers" class="w-8 h-8 text-[#d4e9e2]"></i>
+          </div>
+          <h4 class="text-2xl font-serif-custom font-bold mb-4 tracking-tight">高静小学校 DXのあゆみ</h4>
+          <p class="text-gray-400 mb-8 flex-grow leading-relaxed font-light">
+            Google Chatを用いた情報共有、職員ポータルサイト（〆切リスト、特別教室予約表等）の構築過程をたどります。
+          </p>
+          <div class="pt-6 border-t border-[rgba(255,255,255,0.05)] mt-auto">
+            <div class="flex flex-col gap-2">
+              <a href="https://sites.google.com/view/2026champions-hidaka/%E3%83%9B%E3%83%BC%E3%83%A0" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium">
+                <span>サイトを見る</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- カード2 -->
+        <div class="fade-in-up sb-card p-8 md:p-10 h-full flex flex-col" style="transition-delay: 100ms;">
+          <div class="mb-6 p-4 bg-[#1e3932] inline-block rounded-2xl border border-[#2c4a40]">
+            <i data-lucide="calendar" class="w-8 h-8 text-[#d4e9e2]"></i>
+          </div>
+          <h4 class="text-2xl font-serif-custom font-bold mb-4 tracking-tight">Google カレンダー DX</h4>
+          <p class="text-gray-400 mb-8 flex-grow leading-relaxed font-light">
+            個人・チーム・学校の3段階での最適化。議事録の自動生成、行事予定のCSVインポート、Classroom連携など。
+          </p>
+          <div class="pt-6 border-t border-[rgba(255,255,255,0.05)] mt-auto">
+            <div class="flex flex-col gap-2">
+              <a href="https://moritaka5104.github.io/20260108-Google-Calendar/" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium">
+                <span>サイトを見る</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- カード3 -->
+        <div class="fade-in-up sb-card p-8 md:p-10 h-full flex flex-col" style="transition-delay: 200ms;">
+          <div class="mb-6 p-4 bg-[#1e3932] inline-block rounded-2xl border border-[#2c4a40]">
+            <i data-lucide="monitor" class="w-8 h-8 text-[#d4e9e2]"></i>
+          </div>
+          <h4 class="text-2xl font-serif-custom font-bold mb-4 tracking-tight">１人１台端末の効果的な活用</h4>
+          <p class="text-gray-400 mb-8 flex-grow leading-relaxed font-light">
+            共同編集による他者参照のメリット、実物投影機とMeetの連携、デジタルドリルやスプレッドシートを用いた授業改善。
+          </p>
+          <div class="pt-6 border-t border-[rgba(255,255,255,0.05)] mt-auto">
+            <div class="flex flex-col gap-2">
+              <a href="https://drive.google.com/file/d/1bp8ui_tRQN_LPO8xEMSdp-jZ6Z8W6iYy/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium mb-2">
+                <span>ICT通信</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+              <a href="https://drive.google.com/file/d/12JeT0wzGxviV2MZ7uU8weTMfde3V5msP/view?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium">
+                <span>勤務校のリーフレット</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- カード4 -->
+        <div class="fade-in-up sb-card p-8 md:p-10 h-full flex flex-col" style="transition-delay: 300ms;">
+          <div class="mb-6 p-4 bg-[#1e3932] inline-block rounded-2xl border border-[#2c4a40]">
+            <i data-lucide="users" class="w-8 h-8 text-[#d4e9e2]"></i>
+          </div>
+          <h4 class="text-2xl font-serif-custom font-bold mb-4 tracking-tight">児童会DX</h4>
+          <p class="text-gray-400 mb-8 flex-grow leading-relaxed font-light">
+            委員会活動、児童総会、選挙管理等のデジタル化実践。子どもたち自身が創り出すデジタル環境。
+          </p>
+          <div class="pt-6 border-t border-[rgba(255,255,255,0.05)] mt-auto">
+            <div class="flex flex-col gap-2">
+              <a href="https://sites.google.com/view/geg-asa-jidoukai/%E3%83%9B%E3%83%BC%E3%83%A0" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium">
+                <span>サイトを見る</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-16 text-center fade-in-up">
+        <button onclick="showPage('step2')" class="px-8 py-4 bg-[#cba258] text-[#0b1411] rounded-full font-bold text-lg hover:bg-[#b58e47] transition-all hover:scale-105 inline-flex items-center shadow-lg">
+          次のステップへ：AI活用の世界へ <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- 4. ステップ2画面 -->
+    <div id="page-step2" class="page-section hidden px-6 max-w-6xl mx-auto">
+      <button onclick="showPage('home')" class="mb-8 flex items-center text-gray-400 hover:text-white transition-colors font-medium">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> ホームに戻る
+      </button>
+
+      <div class="fade-in-up text-center mb-16" style="transition-delay: 0ms;">
+        <h2 class="text-xs font-bold tracking-widest text-[#cba258] uppercase mb-3">Step 2</h2>
+        <h3 class="text-4xl md:text-5xl font-bold tracking-tight mb-6 font-serif-custom">AI活用の世界へ</h3>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto font-light">
+          DXの基盤を活用し、生成AIを「編集者」「デザイナー」「伴走者」として迎え入れる方法と実践を学びます。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- カード1 -->
+        <div class="fade-in-up sb-card p-8 md:p-10 h-full flex flex-col" style="transition-delay: 0ms;">
+          <div class="mb-6 p-4 bg-[#1e3932] inline-block rounded-2xl border border-[#2c4a40]">
+            <i data-lucide="sparkles" class="w-8 h-8 text-[#cba258]"></i>
+          </div>
+          <h4 class="text-2xl font-serif-custom font-bold mb-4 tracking-tight">Gemini 活用研修</h4>
+          <p class="text-gray-400 mb-8 flex-grow leading-relaxed font-light">
+            AIに関する基礎知識（シンギュラリティ等）、プロンプトの基本、AIへのインタビュー体験など、初めての生成AI。
+          </p>
+          <div class="pt-6 border-t border-[rgba(255,255,255,0.05)] mt-auto">
+            <div class="flex flex-col gap-2">
+              <a href="https://sites.google.com/view/20250529-nights-sakura/%E3%83%9B%E3%83%BC%E3%83%A0" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium">
+                <span>サイトを見る</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- カード2 -->
+        <div class="fade-in-up sb-card p-8 md:p-10 h-full flex flex-col" style="transition-delay: 100ms;">
+          <div class="mb-6 p-4 bg-[#1e3932] inline-block rounded-2xl border border-[#2c4a40]">
+            <i data-lucide="book-open" class="w-8 h-8 text-[#cba258]"></i>
+          </div>
+          <h4 class="text-2xl font-serif-custom font-bold mb-4 tracking-tight">AI時代の教材研究と授業</h4>
+          <p class="text-gray-400 mb-8 flex-grow leading-relaxed font-light">
+            教師の役割の変化（学びのデザイナーへ）、個別最適な学びの実現に向けた発問や評価の工夫。
+          </p>
+          <div class="pt-6 border-t border-[rgba(255,255,255,0.05)] mt-auto">
+            <div class="flex flex-col gap-2">
+              <a href="https://sites.google.com/view/kyozaikenkyu/%E3%83%9B%E3%83%BC%E3%83%A0" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium">
+                <span>サイトを見る</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- カード3 -->
+        <div class="fade-in-up sb-card p-8 md:p-10 h-full flex flex-col" style="transition-delay: 200ms;">
+          <div class="mb-6 p-4 bg-[#1e3932] inline-block rounded-2xl border border-[#2c4a40]">
+            <i data-lucide="clock" class="w-8 h-8 text-[#cba258]"></i>
+          </div>
+          <h4 class="text-2xl font-serif-custom font-bold mb-4 tracking-tight">生成AIを使った校務の時短</h4>
+          <p class="text-gray-400 mb-8 flex-grow leading-relaxed font-light">
+            GeminiのCanvas機能を使った宿泊学習計画の作成（過去データの活用）、NotebookLMを活用した提案文書の要約。
+          </p>
+          <div class="pt-6 border-t border-[rgba(255,255,255,0.05)] mt-auto">
+            <div class="flex flex-col gap-2">
+              <a href="https://docs.google.com/presentation/d/1Eh8gcX1CyKpGRigqjdopH3lZnghXEYbsY27L72xAbl0/edit?usp=sharing" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium">
+                <span>スライドを見る</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- カード4 -->
+        <div class="fade-in-up sb-card p-8 md:p-10 h-full flex flex-col" style="transition-delay: 300ms;">
+          <div class="mb-6 p-4 bg-[#1e3932] inline-block rounded-2xl border border-[#2c4a40]">
+            <i data-lucide="pen-tool" class="w-8 h-8 text-[#cba258]"></i>
+          </div>
+          <h4 class="text-2xl font-serif-custom font-bold mb-4 tracking-tight">プロンプト＆デザイン</h4>
+          <p class="text-gray-400 mb-8 flex-grow leading-relaxed font-light">
+            「視覚翻訳」や「認知の引き算」など、抽象的な概念を可視化し、情報を効果的に伝えるためのAI活用とスライドデザイン術。
+          </p>
+          <div class="pt-6 border-t border-[rgba(255,255,255,0.05)] mt-auto">
+            <div class="flex flex-col gap-2">
+              <a href="https://moritaka5104.github.io/20260108-Asahikawa-slide/" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium">
+                <span>サイトを見る</span>
+                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-16 text-center fade-in-up">
+        <button onclick="showPage('step3')" class="px-8 py-4 bg-[#00704a] text-white rounded-full font-medium text-lg hover:bg-[#005c3e] transition-all hover:scale-105 inline-flex items-center shadow-lg">
+          次のステップへ：AIとともに伴走 <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- 5. ステップ3画面 -->
+    <div id="page-step3" class="page-section hidden px-6 max-w-6xl mx-auto">
+      <button onclick="showPage('home')" class="mb-8 flex items-center text-gray-400 hover:text-white transition-colors font-medium">
+        <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> ホームに戻る
+      </button>
+
+      <div class="fade-in-up text-center mb-16" style="transition-delay: 0ms;">
+        <h2 class="text-xs font-bold tracking-widest text-[#00704a] uppercase mb-3">Step 3</h2>
+        <h3 class="text-4xl md:text-5xl font-bold tracking-tight mb-6 font-serif-custom">AIとともに、伴走すること</h3>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto font-light">
+          AIを単なるツールとしてではなく、共に学びを深めるパートナーとして活用する実践です。
+        </p>
+      </div>
+
+      <div class="max-w-3xl mx-auto">
+        <!-- カード1 -->
+        <div class="fade-in-up sb-card p-8 md:p-10 h-full flex flex-col" style="transition-delay: 0ms;">
+          <div class="mb-6 p-4 bg-[#1e3932] inline-block rounded-2xl border border-[#2c4a40] w-max">
+            <i data-lucide="book-text" class="w-8 h-8 text-[#d4e9e2]"></i>
+          </div>
+          <h4 class="text-2xl font-serif-custom font-bold mb-4 tracking-tight">NotebookLMを活用した伴走</h4>
+          <p class="text-gray-400 mb-8 flex-grow leading-relaxed font-light">
+            提供された資料や情報を基に、AIがパーソナライズされた対話や洞察を提供します。以下のリンクからNotebookLMにアクセスし、実際の伴走体験を開始してください。
+          </p>
+          <div class="pt-6 border-t border-[rgba(255,255,255,0.05)] mt-auto">
+            <div class="flex flex-col gap-2">
+              <a href="https://notebooklm.google.com/notebook/f0129aff-4947-4520-a15e-cbadae28d2e2" target="_blank" rel="noopener noreferrer" class="link-pill flex items-center justify-between text-sm px-5 py-3 rounded-xl font-medium">
+                <span>NotebookLMを開く</span>
+                <i data-lucide="external-link" class="w-4 h-4 opacity-70"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- フッター & コミュニティリンク (白背景指定) -->
+  <footer class="bg-[#fbfbfd] text-[#1d1d1f] pt-24 pb-12 px-6 mt-auto rounded-t-[3rem] shadow-[0_-10px_40px_rgba(0,0,0,0.1)] relative z-10">
+    <div class="max-w-5xl mx-auto">
+      
+      <!-- Profile -->
+      <div class="flex flex-col items-center mb-16 fade-in-up is-visible">
+        <h3 class="text-gray-400 text-sm font-bold tracking-widest uppercase mb-6">Profile</h3>
+        
+        <div class="text-center mb-6">
+          <p class="text-2xl font-serif-custom font-bold mb-3 text-[#1d1d1f]">森 隆一郎 <span class="text-base text-gray-500 font-normal ml-2 font-sans">Ryuichiro Mori</span></p>
+          <ul class="text-gray-600 space-y-1">
+            <li>Google for Education 認定トレーナー</li>
+            <li>GEG Asahikawa 共同リーダー</li>
+            <li>Gemini 認定教育者</li>
+            <li>道教委生成AI利活用推進プロジェクト</li>
+          </ul>
+        </div>
+
+        <div class="flex flex-wrap justify-center items-center gap-6 mb-8">
+          <img src="__NEW__ GfE-Badges-Vertical_Certified-Trainer (1).png" alt="Google for Education Certified Trainer" class="h-28 object-contain">
+          <img src="Badge.png" alt="Gemini Certified Educator" class="h-28 object-contain">
+        </div>
+
+        <a href="https://www.facebook.com/profile.php?id=100024280331629" target="_blank" rel="noopener noreferrer" class="flex items-center text-gray-700 hover:text-black transition-all bg-white hover:bg-gray-50 px-8 py-4 rounded-full border border-gray-200 hover:border-gray-300 shadow-sm">
+          <i data-lucide="facebook" class="w-5 h-5 mr-3 text-blue-600"></i>
+          <span class="font-medium">Facebook</span>
+        </a>
+      </div>
+
+      <!-- GEG Asahikawa -->
+      <div class="mb-8 text-center fade-in-up is-visible flex flex-col items-center">
+        <h3 class="text-gray-400 text-sm font-bold tracking-widest uppercase mb-4">GEG Asahikawa</h3>
+        <img src="GEG Asahikawa ロゴ (1).jpg" alt="GEG Asahikawa" class="h-16 object-contain mb-6">
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-20 fade-in-up is-visible">
+        <!-- OPEN CHAT -->
+        <a href="https://line.me/ti/g2/owdY3jYHfiFCKD1V5HCLhcaMgldf9Gm4Qvoicw?utm_source=invitation&utm_medium=link_copy&utm_campaign=default" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center py-8 rounded-2xl border border-green-200 bg-green-50 hover:bg-green-100 transition-all group shadow-sm">
+          <i data-lucide="message-circle" class="w-7 h-7 text-green-600 mr-4 group-hover:scale-110 transition-transform"></i>
+          <div class="flex flex-col text-left">
+            <span class="text-green-700 font-bold text-sm tracking-wider mb-1">OPEN CHAT</span>
+            <span class="text-green-600 text-sm">先行配信を受け取る</span>
+          </div>
+        </a>
+
+        <!-- INSTAGRAM -->
+        <a href="https://www.instagram.com/geg.asahikawa?igsh=MTd4MjM0eHU4d3UwMQ%3D%3D" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center py-8 rounded-2xl border border-pink-200 bg-pink-50 hover:bg-pink-100 transition-all group shadow-sm">
+          <div class="flex flex-col text-center">
+            <span class="text-pink-600 font-bold text-sm tracking-wider mb-1">INSTAGRAM</span>
+            <span class="text-pink-500 text-sm">Follow Us</span>
+          </div>
+        </a>
+
+        <!-- FACEBOOK -->
+        <a href="https://www.facebook.com/profile.php?id=61563304486367" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center py-8 rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-all group shadow-sm">
+          <div class="flex flex-col text-center">
+            <span class="text-blue-600 font-bold text-sm tracking-wider mb-1">FACEBOOK</span>
+            <span class="text-blue-500 text-sm">Official Page</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Lucideアイコンの初期化
+    lucide.createIcons();
+
+    let observer;
+
+    // 初期化とObserver設定
+    document.addEventListener("DOMContentLoaded", () => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+      };
+
+      observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      // 初期表示(Home)のアニメーション要素を監視
+      observeElementsIn('#page-home');
+      // フッターの要素も監視
+      observeElementsIn('footer');
+    });
+
+    // 特定のコンテナ内の要素を監視対象にする関数
+    function observeElementsIn(selector) {
+      document.querySelectorAll(`${selector} .fade-in-up`).forEach((element) => {
+        // 一旦可視クラスを外し、再度監視させる
+        element.classList.remove('is-visible');
+        observer.observe(element);
+      });
+    }
+
+    // SPA風のページ切り替え機能
+    function showPage(pageId) {
+      // 全ページを非表示
+      document.querySelectorAll('.page-section').forEach(page => {
+        page.classList.add('hidden');
+      });
+      
+      // 対象ページを表示
+      const targetPage = document.getElementById('page-' + pageId);
+      if (targetPage) {
+        targetPage.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // 切り替えたページ内のアニメーションを再設定
+        observeElementsIn('#page-' + pageId);
+      }
+    }
+  </script>
+</body>
+</html>
